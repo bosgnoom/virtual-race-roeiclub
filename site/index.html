@@ -8,6 +8,8 @@
   <!-- Thema inladen -->
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
+  <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Kaartje inladen -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -22,38 +24,51 @@
   <script src="main.js"></script>
   <script src="kaart.js"></script>
   <script src="routes.js"></script>
+  <script src="menu.js"></script>
 
-  <!-- Afmetingen van de kaart, deze komt ooit in een style.css terecht -->
-  <style>
-    #mapid {
-      height: 250px;
-    }
-  </style>
+  <!-- style.css inladen, map en menu -->
+  <link rel="stylesheet" href="style.css">
+
 </head>
 
-<body onload="runSetup()">
-  <header class="w3-container w3-card w3-theme">
-    <h1>Virtuele race</h1>
+<body onload="">
+  <nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:none;">
+    <button class="w3-bar-item w3-button" onclick="showContent('startRace')">Race</button>
+    <button class="w3-bar-item w3-button" onclick="showContent('races')">Beschikbare races</button>
+  </nav>
+
+  <header class="w3-top w3-bar w3-theme">
+    <button class="w3-bar-item w3-button w3-xxxlarge w3-hover-theme" id="mySidebarButton" onclick="showSidebar()">&#9776;</button>
+    <h1 class="w3-bar-item">Virtuele race</h1>
   </header>
-  <hr>
-  <div class="w3-container">
+
+  <div class="w3-container" style="margin-top: 90px;">
+    <hr>
+
     <div class="w3-cell-row">
-      <div class="w3-cell" style="width:10%">
-        <button id="knopje" onclick="startRun()">Start</button>
+      <div class="w3-cell w3-container" id="startRace" style="display:block;">
+        <h2>Welkom bij de race</h2>
+        Klik op <button id="knopje" onclick="runSetup()">START</button>
+        <hr>
       </div>
 
-      <div id="contents" class="w3-cell w3-container">
+      <div class="w3-cell w3-container" id="races" style="display:none;">
+        Nog leeg...
+        <!-- Wordt gevuld via JavaScript -->
+      </div>
+
+      <div class="w3-cell w3-container" id="contents">
         <!-- Wordt gevuld via JavaScript -->
       </div>
     </div>
-
     <div class="w3-cell-row">
       <div class="w3-cell w3-container" id="mapid">
+        <!-- Wordt gevuld via JavaScript -->
       </div>
     </div>
   </div>
 
-  <footer class="w3-container w3-theme w3-margin-top">
+  <footer class="w3-container w3-bottom w3-theme w3-margin-top">
     <h3 id="footer">Veel plezier</h3>
   </footer>
 </body>

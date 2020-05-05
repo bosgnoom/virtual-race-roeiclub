@@ -21,3 +21,5 @@ Bevat de HTML en JavaScript voor de website.
 ### read_sheets
 
 De site gebruikt als database een google sheet. Interface tussen website en google sheets is in ontwikkeling. In eerste instantie is een poging gedaan om via _Service Accounts_, _OAuth2_ en _API_'s in te loggen op Google en dan de sheet te bewerken. Helaas is dit (nog) niet gelukt. Een alternatief is om via een "macro" in de sheet CRUD (**C**reate, **R**ead, **U**pdate, **D**elete) via een WebApp te introduceren.
+
+WebApp begint iets te worden. 
