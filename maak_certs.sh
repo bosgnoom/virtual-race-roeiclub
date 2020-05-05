@@ -8,11 +8,10 @@ source config.sh
 echo "########################"
 echo "# Generate dhparam.pem #"
 echo "########################"
-# Skip if exists
 
+# Skip if exists
 echo *Generate dhparam key*
 [[ -e nginx/dhparam.pem ]] || openssl dhparam -out nginx/dhparam.pem 4096
-
 
 # Skip creating CA root certificate if it already exists
 echo "##################################"
@@ -20,42 +19,36 @@ echo "# Become a Certificate Authority #"
 echo "##################################"
 
 echo *Generate private key CA*
-[[ -e priv_and_pub.key ]] || openssl genrsa -out priv_and_pub.key 4096
-echo 
-
-    
-echo *Generate root certificate CA*
-[[ -e CA.pem ]] || openssl req -new \
-    -key priv_and_pub.key \
-    -subj $SUBJECT \
-    -out CA.pem \
-    #-days 3650 \ deze gaf een foutmelding...
+[[ -e certs/priv_and_pub.key ]] || openssl genrsa -out certs/priv_and_pub.key 4096
 echo
 
+echo *Generate root certificate CA*
+[[ -e certs/CA.pem ]] || openssl req -new \
+    -key certs/priv_and_pub.key \
+    -subj $SUBJECT \
+    -out certs/CA.pem
+#-days 3650 \ deze gaf een foutmelding...
+echo
 
 echo *Generate android_options.ext*
->android_options.ext cat <<-EOF
+cat >certs/android_options.ext <<-EOF
 basicConstraints=CA:true
 EOF
 
-
 echo *Generate CA certificate for android*
-[[ -e CA.crt ]] || openssl x509 -req -days 356 \
-    -in CA.pem \
-    -signkey priv_and_pub.key \
-    -extfile android_options.ext \
-    -out CA.crt
+[[ -e certs/CA.crt ]] || openssl x509 -req -days 356 \
+    -in certs/CA.pem \
+    -signkey certs/priv_and_pub.key \
+    -extfile certs/android_options.ext \
+    -out certs/CA.crt
 echo
-
 
 echo *Android: CA to DER format*
-[[ -e CA.der.crt ]] || openssl x509 -inform PEM \
+[[ -e certs/CA.der.crt ]] || openssl x509 -inform PEM \
     -outform DER \
-    -in CA.crt \
-    -out CA.der.crt
+    -in certs/CA.crt \
+    -out certs/CA.der.crt
 echo
-
-
 
 echo "##########################"
 echo "# Create CA-signed certs #"
@@ -65,16 +58,14 @@ echo *Generate private key for $NAME*
 [[ -e nginx/$NAME.key ]] || openssl genrsa -out nginx/$NAME.key 4096
 echo
 
-
 echo *Create certificate-signing request*
-[[ -e $NAME.csr ]] || openssl req -new -key nginx/$NAME.key \
+[[ -e certs/$NAME.csr ]] || openssl req -new -key nginx/$NAME.key \
     -subj $SUBJECT \
-    -out $NAME.csr
+    -out certs/$NAME.csr
 echo
 
-
 echo *Create a config file for the extensions*
->$NAME.ext cat <<-EOF
+cat >certs/$NAME.ext <<-EOF
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
@@ -91,34 +82,27 @@ extendedKeyUsage=serverAuth
 EOF
 echo
 
-
 echo *Create the signed certificate*
-openssl x509 -req -in $NAME.csr \
-    -CA CA.crt -CAkey priv_and_pub.key -CAcreateserial \
+openssl x509 -req -in certs/$NAME.csr \
+    -CA certs/CA.crt -CAkey certs/priv_and_pub.key -CAcreateserial \
     -extensions v3_req \
-    -days 356 -sha256 -extfile $NAME.ext \
+    -days 356 -sha256 -extfile certs/$NAME.ext \
     -out nginx/$NAME.crt
 echo
 
-
 echo *Create pkcs12 certificate for android*
 openssl pkcs12 -keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES \
-    -export -in nginx/$NAME.crt -inkey nginx/$NAME.key \
+    -export -in nginx/$NAME.crt \
+    -inkey nginx/$NAME.key \
+    -name $NAME \
+    -out site/$NAME.p12
 
-    
 echo *Setting permissions for pkcs12 certificate*
 chmod 644 site/$NAME.p12
 
 echo *Cleanup*
-rm android_options.ext
-rm $NAME.csr
-rm $NAME.ext
+rm certs/android_options.ext
+rm certs/$NAME.csr
+rm certs/$NAME.ext
 
 echo *All done*
-
-
-
-
-    
-    
-
