@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    
-  </head>
-  <body>
-   <script>
-   var url = "https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces"
-   fetch(url).then(function(response) {
-  return response.json();
-}).then(function(data) {
-  console.log(data);
-  console.log(data.values);
-}).catch(function() {
-  console.log("Booo");
-});
 
-</script>
-  </body>
+<head>
+
+</head>
+
+<body>
+  <script>
+    var url = "https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces"
+    fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      console.log(data);
+      console.log(data.values);
+    }).catch(function () {
+      console.log("Booo");
+    });
+
+  </script>
+</body>
+
 </html>
