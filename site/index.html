@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Instelling voor website voor een GSM-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Thema inladen -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
+
+  <!-- Kaartje inladen -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+
+  <!-- Eigen scripts inladen -->
+  <script src="main.js"></script>
+  <script src="kaart.js"></script>
+  <script src="routes.js"></script>
+
+  <!-- Afmetingen van de kaart, deze komt ooit in een style.css terecht -->
+  <style>
+    #mapid {
+      height: 250px;
+    }
+  </style>
+</head>
+
+<body onload="runSetup()">
+  <header class="w3-container w3-card w3-theme">
+    <h1>Virtuele race</h1>
+  </header>
+  <hr>
+  <div class="w3-container">
+    <div class="w3-cell-row">
+      <div class="w3-cell" style="width:10%">
+        <button id="knopje" onclick="startRun()">Start</button>
+      </div>
+
+      <div id="contents" class="w3-cell w3-container">
+        <!-- Wordt gevuld via JavaScript -->
+      </div>
+    </div>
+
+    <div class="w3-cell-row">
+      <div class="w3-cell w3-container" id="mapid">
+      </div>
+    </div>
+  </div>
+
+  <footer class="w3-container w3-theme w3-margin-top">
+    <h3 id="footer">Veel plezier</h3>
+  </footer>
+</body>
+
+</html>
