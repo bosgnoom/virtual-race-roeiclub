@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <!-- Thema inladen -->
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
+  <link rel="stylesheet" href="w3pro.css">  <!-- https://www.w3schools.com/w3css/4/ nu lokaal ivm verlopen certificaat -->
+  <link rel="stylesheet" href="w3-theme-blue.css"> <!-- https://www.w3schools.com/lib/ idem-->
   <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -31,9 +31,9 @@
 
 </head>
 
-<body onload="">
+<body onload="runSetup()">
   <nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:none;">
-    <button class="w3-bar-item w3-button" onclick="showContent('startRace')">Race</button>
+    <button class="w3-bar-item w3-button" onclick="showContent('contents')">Race</button>
     <button class="w3-bar-item w3-button" onclick="showContent('races')">Beschikbare races</button>
   </nav>
 
@@ -46,21 +46,23 @@
     <hr>
 
     <div class="w3-cell-row">
-      <div class="w3-cell w3-container" id="startRace" style="display:block;">
-        <h2>Welkom bij de race</h2>
-        Klik op <button id="knopje" onclick="runSetup()">START</button>
-        <hr>
-      </div>
-
+      <!-- OVERZICHT RACES -->
       <div class="w3-cell w3-container" id="races" style="display:none;">
         Nog leeg...
         <!-- Wordt gevuld via JavaScript -->
       </div>
 
+      <!-- RACE ZELF -->
       <div class="w3-cell w3-container" id="contents">
         <!-- Wordt gevuld via JavaScript -->
+        <h2>Welkom bij de race</h2>
+        Klik op <button id="knopje" onclick="startRun()">START</button>
+        
       </div>
     </div>
+
+    <!-- KAART -->
+    <hr>
     <div class="w3-cell-row">
       <div class="w3-cell w3-container" id="mapid">
         <!-- Wordt gevuld via JavaScript -->

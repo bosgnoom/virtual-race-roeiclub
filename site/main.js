@@ -21,9 +21,7 @@ function runSetup() {
 		if (virtualrace.currentPosition) {
 			updateInformation(virtualrace.currentPosition);
 		}
-  }, 1000);
-  
-  startRun();
+	}, 1000);
 }
 
 function updateInformation(position) {
@@ -89,6 +87,7 @@ function updateUserText(progress, afstand) {
 				"<h2>GA NAAR DE START</h2>" + "Het is nog maar " + afstand + "m...";
 			virtualrace.stopTijd = Date.now();
 			break;
+
 		case 1:
 			// 0e waypoint, start de tijd
 			if (!virtualrace.started) {
@@ -99,12 +98,20 @@ function updateUserText(progress, afstand) {
 			virtualrace.stopTijd = Date.now();
 			tekst = "<h2>GESTART!</h2><h3>Ga naar eerste checkpoint</h3>";
 			break;
+
+		case virtualrace.waypoints.length - 1:
+			// Laatste poortje, finish in zicht...
+			virtualrace.stopTijd = Date.now();
+			tekst = "<h2>Ga naar de finish</h2>Nog ff doorpeddelen...";
+			break;
+
 		case virtualrace.waypoints.length:
 			// Bij de FINISH
 			tekst = "<h2>Jeuj, je bent gefinished!</h2>";
 			// Finish gehaald, nu GPS weer uitzetten
 			navigator.geolocation.clearWatch(virtualrace.watchPositionId);
 			break;
+
 		default:
 			// Onderweg
 			virtualrace.stopTijd = Date.now();

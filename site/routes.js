@@ -4,10 +4,14 @@
 // Connect the user's GPS data to showPosition (main function)
 function startRun() {
 	if (navigator.geolocation) {
+
+		console.log("startRun");
+
 		var inhoud = document.getElementById("startRace");
 
-		document.getElementById("mapid").style.display = "block";
-
+		// Scherm omgooien
+		document.getElementById("mapid").style.display = "block";  // kaart laten zien
+		document.getElementById("contents").style.display = "block";  // race scherm laten zien
 		console.log("Klaar voor de start?");
 		virtualrace.progress = 0;
 
