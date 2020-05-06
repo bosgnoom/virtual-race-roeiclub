@@ -15,6 +15,7 @@ function runSetup() {
 	window.virtualrace.startTijd = Date.now();
 	window.virtualrace.afstand = 0;
 	window.virtualrace.started = false;
+	window.virtualrace.routes_available = loadRoutes();
 
 	// Iedere seconde informatie bijwerken
 	window.setInterval(function () {

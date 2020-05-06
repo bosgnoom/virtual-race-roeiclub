@@ -1,4 +1,4 @@
-docker run --rm \
+docker run -d --rm \
     -p 8000:443 \
     -v "$(pwd)"/site:/usr/share/nginx/html \
     my-nginx
