@@ -53,14 +53,16 @@ function setupWayPoints() {
 
 function loadRoutes() {
 	console.log("Routes laden...");
+	var inhoud = document.getElementById("races");
+	inhoud.innerHTML = "Routes worden geladen...";
 
 	routesUrl =
-		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces";
+		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=retrieve";
+	//	 https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
 
 	fetch(routesUrl, { method: "GET" })
 		.then(function (response) {
 			console.log("Er is een response...");
-			console.log(response);
 			if (response.ok) {
 				console.log("...Het is een goede!");
 				return response.json();
@@ -80,6 +82,9 @@ function loadRoutes() {
 
 function laatRoutesZien(welkeDan) {
 	if (welkeDan.result == "success") {
+		console.log("Routes:");
+		console.log(welkeDan);
+
 		// Inhoud van "races" leegmaken en vullen met de races
 		var inhoud = document.getElementById("races");
 		inhoud.innerHTML = "Beschikbare races:";
@@ -93,7 +98,7 @@ function laatRoutesZien(welkeDan) {
 		// Iedere race in de <ul> zetten, als <li>
 		welkeDan.values.map(function (route) {
 			li = document.createElement("li");
-			li.innerHTML = route[0];
+			li.innerHTML = `<a href=\"#\"><h3>${route[2]}</h3></a>${route[3]}`;
 			lijstje.appendChild(li);
 		});
 	} else {

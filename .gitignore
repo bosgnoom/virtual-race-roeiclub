@@ -1,0 +1,13 @@
+#.gitignore
+
+# Anything to do with certificates
+*.ext
+*.csr
+*.crt
+*.pem
+*.key
+*.srl
+*.p12
+
+# Real config parameters
+config.sh
