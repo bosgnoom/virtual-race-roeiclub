@@ -23,30 +23,63 @@ function loadMap() {
 	return mymap;
 }
 
-function loadWayPoints() {
+function loadWayPoints(routenummer) {
 	// Define waypoints
 	// Nu als static content, wordt vervangen door een google sheets interface
+	console.log("loadWayPoints: Routenummer:" + routenummer);
+	var waypoints = [];
 
-	var waypoints = [
-		[51.197954, 6.010633],
-		[51.198339, 6.010791],
-		[51.198524, 6.009884],
-		[51.198156, 6.009634],
-	];
+	if (routenummer === undefined) {
+		// Set up a route to show in the map
+		var waypoints = [
+			[51.197954, 6.010633],
+			[51.198339, 6.010791],
+			[51.198524, 6.009884],
+			[51.198156, 6.009634],
+		];
+	} else {
+		// Load specific route from google sheets result
+		// Kolomnummers voor de waypoints
+		var routeItems = [4, 6, 7, 8, 9, 10, 5];
+		routeItems.forEach(function (i) {
+			var waypoint = virtualrace.routes.values[routenummer][i];
+			waypoint = waypoint.split(",");
+			console.log("Waypoint: " + waypoint);
+			if (waypoint != "") {
+				console.log(waypoint[0] + "->" + parseFloat(waypoint[0]));
+				waypoints.push([parseFloat(waypoint[0]), parseFloat(waypoint[1])]);}
+		});
+		console.log(waypoints);
+	}
+
 	console.log("Aantal waypoints:" + waypoints.length);
+
+	removeWayPoints(virtualrace.markers);
+	virtualrace.markers = setupWayPoints(waypoints);
+
 	return waypoints;
 }
 
-function setupWayPoints() {
+function removeWayPoints(markers) {
+	// Remove all waypoints on map
+	if (markers)
+		markers.forEach(function (marker) {
+			virtualrace.mymap.removeLayer(marker);
+		});
+}
+
+function setupWayPoints(waypoints) {
 	// Show all waypoints on map
+	waypoints = waypoints || virtualrace.waypoints;
 
 	var markers = new Array();
-	for (i = 0; i < virtualrace.waypoints.length; i++) {
-		var circle = L.circleMarker(virtualrace.waypoints[i], {
+	for (i = 0; i < waypoints.length; i++) {
+		console.log(waypoints[i]);
+		var circle = L.circleMarker(waypoints[i], {
 			opacity: 0.2,
 		}).addTo(virtualrace.mymap);
 		markers.push(circle);
-		console.log("Waypoint nr " + i + ":" + virtualrace.waypoints[i]);
+		console.log("Waypoint nr " + i + ":" + waypoints[i]);
 	}
 	return markers;
 }
@@ -58,7 +91,6 @@ function loadRoutes() {
 
 	routesUrl =
 		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=retrieve";
-	//	 https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
 
 	fetch(routesUrl, { method: "GET" })
 		.then(function (response) {
@@ -74,6 +106,8 @@ function loadRoutes() {
 		.then(function (data) {
 			console.log("We kunnen de data laten zien...");
 			laatRoutesZien(data);
+			// Niet netjes op deze plaats, maar hoe anders???
+			window.virtualrace.routes = data;
 		})
 		.catch(function (error) {
 			console.log("Ah KAK: " + error);
@@ -87,19 +121,35 @@ function laatRoutesZien(welkeDan) {
 
 		// Inhoud van "races" leegmaken en vullen met de races
 		var inhoud = document.getElementById("races");
-		inhoud.innerHTML = "Beschikbare races:";
+		inhoud.innerHTML = "Beschikbare races:<br><br>";
 
 		// Voor nu een lijstje <ul>
-		var lijstje = document.createElement("ul");
+		var lijstje = document.createElement("div");
 
 		// <ul> in de <div id="races">
 		inhoud.appendChild(lijstje);
 
-		// Iedere race in de <ul> zetten, als <li>
-		welkeDan.values.map(function (route) {
-			li = document.createElement("li");
-			li.innerHTML = `<a href=\"#\"><h3>${route[2]}</h3></a>${route[3]}`;
-			lijstje.appendChild(li);
+		// Iedere race in de <div> zetten, als radiobutton
+		welkeDan.values.map(function (route, i) {
+			var radio = document.createElement("input");
+			radio.type = "radio";
+			radio.name = "routes";
+			radio.value = i;
+			radio.id = i;
+			radio.setAttribute("class", "checkmark");
+
+			var span = document.createElement("span");
+			span.setAttribute("class", "checkmark");
+
+			var label = document.createElement("label");
+			label.setAttribute("for", i);
+			label.setAttribute("class", "radio-container");
+			label.setAttribute("onclick", "loadWayPoints(" + i + ");");
+			label.innerHTML = "<b>" + route[2] + "</b><br>" + route[3] + "<br>";
+
+			lijstje.appendChild(label);
+			label.appendChild(radio);
+			label.appendChild(span);
 		});
 	} else {
 		laatRoutesNietGevondenZien();

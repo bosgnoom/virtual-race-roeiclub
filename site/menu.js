@@ -1,6 +1,7 @@
 // MENU functions
 
 function showSidebar() {
+	document.getElementById("mapid").style.display = "none";
 	document.getElementById("mySidebar").style.display = "block";
 	document.getElementById("mySidebarButton").onclick = function () {
 		hideSidebar();
