@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <!-- Thema inladen -->
-  <link rel="stylesheet" href="w3pro.css">  <!-- https://www.w3schools.com/w3css/4/ nu lokaal ivm verlopen certificaat -->
+  <link rel="stylesheet" href="w3pro.css">
+  <!-- https://www.w3schools.com/w3css/4/ nu lokaal ivm verlopen certificaat -->
   <link rel="stylesheet" href="w3-theme-blue.css"> <!-- https://www.w3schools.com/lib/ idem-->
   <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,10 +22,11 @@
     crossorigin=""></script>
 
   <!-- Eigen scripts inladen -->
-  <script src="main.js"></script>
-  <script src="kaart.js?6"></script>
-  <script src="routes.js"></script>
-  <script src="menu.js?1"></script>
+  <script>var version = 10;</script>
+  <script src="main.js?version"></script>
+  <script src="kaart.js?version"></script>
+  <script src="routes.js?version"></script>
+  <script src="menu.js?version"></script>
 
   <!-- style.css inladen, map en menu -->
   <link rel="stylesheet" href="style.css?1">
@@ -38,7 +40,8 @@
   </nav>
 
   <header class="w3-top w3-bar w3-theme">
-    <button class="w3-bar-item w3-button w3-xxxlarge w3-hover-theme" id="mySidebarButton" onclick="showSidebar()">&#9776;</button>
+    <button class="w3-bar-item w3-button w3-xxxlarge w3-hover-theme" id="mySidebarButton"
+      onclick="showSidebar()">&#9776;</button>
     <h1 class="w3-bar-item">Virtuele race</h1>
   </header>
 
@@ -48,16 +51,17 @@
     <div class="w3-cell-row">
       <!-- OVERZICHT RACES -->
       <div class="w3-cell w3-container" id="races" style="display:block;">
-        Nog leeg...
         <!-- Wordt gevuld via JavaScript -->
+        Momentje...
       </div>
+    </div>
 
+    <div class="w3-cell-row">
       <!-- RACE ZELF -->
-      <div class="w3-cell w3-container" id="contents">
+      <div class="w3-cell w3-container" id="contents" style="display:none;">
         <!-- Wordt gevuld via JavaScript -->
         <h2>Welkom bij de race</h2>
         Klik op <button id="knopje" onclick="startRun()">START</button>
-        
       </div>
     </div>
 
@@ -69,10 +73,6 @@
       </div>
     </div>
   </div>
-
-  <footer class="w3-container w3-bottom w3-theme w3-margin-top">
-    <h3 id="footer">Veel plezier</h3>
-  </footer>
 </body>
 
 </html>

@@ -8,14 +8,18 @@ function runSetup() {
 	window.virtualrace = new Object();
 	window.virtualrace.progress = 0;
 	window.virtualrace.mymap = loadMap();
-	window.virtualrace.waypoints = loadWayPoints();
-	window.virtualrace.markers = setupWayPoints();
+	window.virtualrace.waypoints = loadWayPoints(-1);  // -1 = default route
+	window.virtualrace.markers = setupMarkers();
+	// Using fetch, (nog) geen manier gevonden om als functie terug te geven
+	// Uit google sheet
+	loadRoutes(); 
+
+	// Race voortgang
 	window.virtualrace.currentPosition = null;
 	window.virtualrace.currentPosMarker = null;
 	window.virtualrace.startTijd = Date.now();
 	window.virtualrace.afstand = 0;
 	window.virtualrace.started = false;
-	loadRoutes();
 
 	// Iedere seconde informatie bijwerken
 	window.setInterval(function () {
