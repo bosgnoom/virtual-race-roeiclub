@@ -22,11 +22,11 @@
     crossorigin=""></script>
 
   <!-- Eigen scripts inladen -->
-  <script>var version = 10;</script>
-  <script src="main.js?version"></script>
-  <script src="kaart.js?version"></script>
-  <script src="routes.js?version"></script>
-  <script src="menu.js?version"></script>
+  <script>var version = 12;</script>
+  <script src="main.js?xxx"></script>
+  <script src="kaart.js?xxx"></script>
+  <script src="routes.js?xxx"></script>
+  <script src="menu.js?xxx"></script>
 
   <!-- style.css inladen, map en menu -->
   <link rel="stylesheet" href="style.css?1">
@@ -37,6 +37,7 @@
   <nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:none;">
     <button class="w3-bar-item w3-button" onclick="showContent('contents')">Race</button>
     <button class="w3-bar-item w3-button" onclick="showContent('races')">Beschikbare races</button>
+    <button class="w3-bar-item w3-button" onclick="showContent('todo')">TODO</button>
   </nav>
 
   <header class="w3-top w3-bar w3-theme">
@@ -47,6 +48,14 @@
 
   <div class="w3-container" style="margin-top: 90px;">
     <hr>
+
+    <div class="w3-cell-row">
+      <!-- TODO -->
+      <div class="w3-cell w3-container" id="todo" style="display:none;">
+        <!-- Wordt gevuld via JavaScript -->
+        TODO...
+      </div>
+    </div>
 
     <div class="w3-cell-row">
       <!-- OVERZICHT RACES -->

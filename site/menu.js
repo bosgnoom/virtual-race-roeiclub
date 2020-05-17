@@ -10,6 +10,7 @@ function showSidebar() {
 
 function hideSidebar() {
 	document.getElementById("mySidebar").style.display = "none";
+	document.getElementById("mapid").style.display = "block";
 	document.getElementById("mySidebarButton").onclick = function () {
 		showSidebar();
 	};
@@ -17,7 +18,7 @@ function hideSidebar() {
 
 function showContent(welke) {
 	// Niet charmant, via functie mogelijk?
-	alle_elementen = ["mySidebar", "contents", "mapid", "races"];
+	alle_elementen = ["mySidebar", "contents", "races", "todo"];
 
 	// Eerst alles verstoppen
 	alle_elementen.forEach((element) => {
@@ -31,7 +32,5 @@ function showContent(welke) {
 
 	// Gewenste laten zien
 	document.getElementById(welke).style.display = "block";
-	if (welke == "contents") {
 		document.getElementById("mapid").style.display = "block";
-	}
 }

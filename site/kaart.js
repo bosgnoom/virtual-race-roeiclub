@@ -87,6 +87,9 @@ function setupMarkers(waypoints) {
 		markers.push(circle);
 		console.log("Waypoint nr " + i + ":" + waypoints[i]);
 	}
+
+	virtualrace.mymap.fitBounds(waypoints);
+
 	return markers;
 }
 

@@ -15,7 +15,8 @@ function startRun() {
 		virtualrace.progress = 0;
 
 		virtualrace.watchPositionId = navigator.geolocation.watchPosition(
-			showPosition
+			showPosition,
+			{enableHighAccuracy: true}
 		);
 		window.virtualrace.startTijd = Date.now();
 	} else {
