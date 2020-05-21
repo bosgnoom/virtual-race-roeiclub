@@ -16,9 +16,15 @@
 #curl -L -X GET https://script.google.com/macros/s/AKfycbwhB3Wv0oZfOEfLN3yBeTr2dzhINsJhH1Gf5-u2fX8/dev?action=getRaces
 #curl -L -d "action=getRaces" -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces
 
-curl -L -X GET https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces
+#curl -L -X GET https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=getRaces
 echo "..."
 
+#curl -L -X GET https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=startRace&starttijd=123
+#curl -L -d "action=startRace&starttijd=123" -H "Content-Type: application/x-www-form-urlencoded" -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
+
+curl -L -d '{\"action\":\"startRace\", \"key2\":\"value2\"}' -H "Content-Type: application/json" -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
+echo " "
+echo "..."
 
 
 

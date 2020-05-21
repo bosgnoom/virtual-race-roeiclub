@@ -1,5 +1,6 @@
-/* Based on the following work:
-
+/*   
+  Zet deze in de google sheet, als script
+  
    https://github.com/souparno/google-sheet-database/blob/master/www/index.html
    
    Copyright 2011 Martin Hawksey
@@ -16,15 +17,9 @@
 
 // Usage
 //  1. Enter sheet name where data is to be written below
-
 var SHEET_NAME = "Formulierreacties 1";
         
-//  2. Run > setup (needed???)
-function setup() {
-    var doc = SpreadsheetApp.getActiveSpreadsheet();
-    SCRIPT_PROP.setProperty("key", doc.getId());
-}
-
+//  2. Run > setup
 //
 //  3. Publish > Deploy as web app 
 //    - enter Project Version name and click 'Save New Version' 
@@ -56,14 +51,14 @@ function handleResponse(e) {
   try {
     var action = e.parameter.action;
     
-    if (action == 'getRaces') {
-      return getRaces(e);
+    if (action == 'create') {
+      return create(e);
     } else if (action == 'retrieve') {
       return retrieve(e);
     } else if (action == 'update') {
       return update(e);  
-    } else if (action == 'delete') {
-      return del(e);
+    } else if (action == 'getRaces') {
+      return getRaces(e);
     }
   } catch(e){
     // if error return this
@@ -79,7 +74,7 @@ function getDataArr(headers, e){
     var row = [];
     // loop through the header columns
     for (i in headers){
-      if (headers[i] == "Tijdstempel"){ // special case if you include a 'Timestamp' column
+      if (headers[i] == "Timestamp"){ // special case if you include a 'Timestamp' column
         row.push(new Date());
       } else { // else use header name to get data
         row.push(e.parameter[headers[i]]);
@@ -89,18 +84,91 @@ function getDataArr(headers, e){
     return row;
 }
 
+
+function create(e) {
+    // next set where we write the data - you could write to multiple/alternate destinations
+    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+    var sheet = doc.getSheetByName(SHEET_NAME);
+    
+    // we'll assume header is in row 1 but you can override with header_row in GET/POST data
+    var headRow = e.parameter.header_row || 1;
+    var numColumns = sheet.getLastColumn();
+    var headers = sheet.getRange(1, 1, 1, numColumns).getValues()[0];
+    var nextRow = sheet.getLastRow()+1; // get next row
+    var row = getDataArr(headers, e);
+    // more efficient to set values as [][] array than individually
+    sheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
+    // return json success results
+    return ContentService
+          .createTextOutput(JSON.stringify({"result":"success", "row": nextRow}))
+          .setMimeType(ContentService.MimeType.JSON);
+}
+
 function retrieve(e) {
   var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
   var sheet = doc.getSheetByName(SHEET_NAME);
   var numRows = sheet.getLastRow();
   var numColumns = sheet.getLastColumn();
-  var range =  sheet.getRange(1, 1, numRows, numColumns);
-  var values = range.getValues();
+  
+  var header_range = sheet.getRange(1, 1, 1, numColumns);
+  var headers = header_range.getValues();
+  
+  var values_range =  sheet.getRange(2, 1, numRows-1, numColumns);
+  var values = values_range.getValues();
     
+  return ContentService
+  .createTextOutput(JSON.stringify({"result":"success", "headers": headers, "values": values}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function update(e) {
+  var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+  var sheet = doc.getSheetByName(SHEET_NAME);
+  var numColumns = sheet.getLastColumn();
+  var headers = sheet.getRange(1, 1, 1, numColumns).getValues()[0];
+  var row = getDataArr(headers, e);
+  var rowId = e.parameter.rowId;
+    
+  // more efficient to set values as [][] array than individually
+  sheet.getRange(rowId, 1, 1, numColumns).setValues([row]);
+  // return json success results
+  return ContentService
+      .createTextOutput(JSON.stringify({"result":"success", "row": rowId}))
+      .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Todo
+function del(e) {
+
+}
+
+function setup() {
+    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    SCRIPT_PROP.setProperty("key", doc.getId());
+}
+
+//----------------------------------------------------------------------------------------
+
+function getRaces(e) {
+  console.log("getRaces start");
+  
+  var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+  var sheet = doc.getSheetByName(SHEET_NAME);
+  var numRows = sheet.getLastRow();
+  var numColumns = sheet.getLastColumn();
+  var headers = sheet.getRange(1, 1, 1, numColumns).getValues()[0];
+  
+  var kolom = 3;
+  //console.log("kolom:" + kolom);
+  
+  var range = sheet.getRange(2, kolom, numRows-1);
+  //console.log("numRows:" + numRows);
+  
+  var values = range.getValues();
+  console.log("values: " + values);
+              
   return ContentService
     .createTextOutput(JSON.stringify({"result":"success", "values": values}))
     .setMimeType(ContentService.MimeType.JSON);
 }
-
-
 
