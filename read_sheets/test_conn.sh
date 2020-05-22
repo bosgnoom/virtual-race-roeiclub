@@ -22,7 +22,10 @@ echo "..."
 #curl -L -X GET https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=startRace&starttijd=123
 #curl -L -d "action=startRace&starttijd=123" -H "Content-Type: application/x-www-form-urlencoded" -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
 
-curl -L -d '{\"action\":\"startRace\", \"key2\":\"value2\"}' -H "Content-Type: application/json" -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
+curl -L \
+    -d '{action:startRace}' \
+    -H "Content-Type: application/json" \
+    -X POST https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec
 echo " "
 echo "..."
 
