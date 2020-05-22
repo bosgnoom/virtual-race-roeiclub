@@ -15,8 +15,7 @@ function startRun() {
 		virtualrace.progress = 0;
 
 		virtualrace.watchPositionId = navigator.geolocation.watchPosition(
-			showPosition,
-			{enableHighAccuracy: true}
+			showPosition
 		);
 		window.virtualrace.startTijd = Date.now();
 	} else {
@@ -145,6 +144,12 @@ function laatRoutesZien(welkeDan) {
 			label.appendChild(radio);
 			label.appendChild(span);
 		});
+
+		// Add START button at the end of the available races list
+		var knopje = document.createElement("button");
+		inhoud.appendChild(knopje);
+		knopje.innerHTML = "START";
+		knopje.setAttribute("onclick", "fetch_todo();");
 	} else {
 		laatRoutesNietGevondenZien();
 	}

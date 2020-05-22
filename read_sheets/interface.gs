@@ -1,6 +1,4 @@
 /*   
-  Zet deze in de google sheet, als script
-  
    https://github.com/souparno/google-sheet-database/blob/master/www/index.html
    
    Copyright 2011 Martin Hawksey
@@ -18,6 +16,7 @@
 // Usage
 //  1. Enter sheet name where data is to be written below
 var SHEET_NAME = "Formulierreacties 1";
+var SHEET_TIJDEN = "Racetijden";
         
 //  2. Run > setup
 //
@@ -59,6 +58,10 @@ function handleResponse(e) {
       return update(e);  
     } else if (action == 'getRaces') {
       return getRaces(e);
+    } else if (action == 'startRace') {
+      return startRace(e);
+    } else {
+      return geefHint(e);
     }
   } catch(e){
     // if error return this
@@ -84,6 +87,21 @@ function getDataArr(headers, e){
     return row;
 }
 
+function getDataCol(headers, e){
+  //var cl = SpreadsheetApp.getActiveSheet().getRange("RangeName").getColumn();
+  var result = [];
+  for (i in e.parameter){ //i: action, rowId, <welke header>
+    index = headers.indexOf(i);
+    if (index > 0) return index;
+    result.push([i, headers.indexOf(i)]);
+  }
+  //for (i in headers){ //i: 0..15
+  //  result.push(i);
+  //}
+  // When not found, return map of [nr, parameter] for debugging
+  return result;
+}
+  
 
 function create(e) {
     // next set where we write the data - you could write to multiple/alternate destinations
@@ -123,24 +141,34 @@ function retrieve(e) {
 
 function update(e) {
   var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
-  var sheet = doc.getSheetByName(SHEET_NAME);
+  var sheet = doc.getSheetByName(SHEET_TIJDEN);
+  
   var numColumns = sheet.getLastColumn();
   var headers = sheet.getRange(1, 1, 1, numColumns).getValues()[0];
+  var col = getDataCol(headers, e);
+  var data = e.parameter[headers[col]];
+  
   var row = getDataArr(headers, e);
   var rowId = e.parameter.rowId;
     
   // more efficient to set values as [][] array than individually
-  sheet.getRange(rowId, 1, 1, numColumns).setValues([row]);
+  //sheet.getRange(rowId, 1, 1, numColumns).setValues([row]);
+  sheet.getRange(rowId, 1 + col).setValue(data);
+  
   // return json success results
   return ContentService
-      .createTextOutput(JSON.stringify({"result":"success", "row": rowId}))
+      .createTextOutput(JSON.stringify({
+        "result":"success",
+        "row": rowId,
+        "col": col,
+        "data": data,
+        "getDataArr": row,
+        "e": e,
+      }))
       .setMimeType(ContentService.MimeType.JSON);
 }
 
-// Todo
-function del(e) {
-
-}
+//----------------------------------------------------------------------------------------
 
 function setup() {
     var doc = SpreadsheetApp.getActiveSpreadsheet();
@@ -172,3 +200,35 @@ function getRaces(e) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+//------------------------------------------------------------------------------------------
+
+function startRace(e) {
+  console.log("startRace start");
+  
+    // next set where we write the data - you could write to multiple/alternate destinations
+    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+    var sheet = doc.getSheetByName(SHEET_TIJDEN);
+    
+    // we'll assume header is in row 1 but you can override with header_row in GET/POST data
+    var headRow = e.parameter.header_row || 1;
+    var numColumns = sheet.getLastColumn();
+    var headers = sheet.getRange(1, 1, 1, numColumns).getValues()[0];
+    var nextRow = sheet.getLastRow() + 1; // get next row
+    var row = getDataArr(headers, e);
+    // more efficient to set values as [][] array than individually
+    sheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
+    // return json success results
+    return ContentService
+    .createTextOutput(JSON.stringify({"result":"success", "row": nextRow}))
+          .setMimeType(ContentService.MimeType.JSON);
+}
+  
+//------------------------------------------------------------------------------------------
+
+function geefHint(e) {
+  Logger.log("Geef een hint");
+    return ContentService
+    .createTextOutput(JSON.stringify({"result":"fail", "e": e}))
+          .setMimeType(ContentService.MimeType.JSON);
+}
+  

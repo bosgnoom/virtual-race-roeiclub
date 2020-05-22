@@ -1,28 +1,34 @@
 function fetch_todo() {
+	routesUrl =
+		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec";
 
-    routesUrl =
-        "https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec?action=retrieve";
-
-    const data = {
-        action: "startRace",
-    };
-    console.log("Fetch TODO");
-    fetch(routesUrl, {
-        method: 'POST',
-        mode: 'no-cors',
+    console.log("Fetching starting number...");
+    
+	fetch(routesUrl, {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-        .then(function (response) {
-            console.log(response);
-            return response.json();
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        body: "action=startRace", 
+	})
+		.then(function (response) {
+			if (response.ok) {
+				// console.log("Antwoord:");
+				// console.log(response);
+				return response.json();
+			} else {
+                console.error("Geen goede respons terug gekregen...");
+                console.log(response);
+				return null;
+			}
         })
-        .then(data => {
-            console.log("Joehoe!");
-            console.log(data);
-        })
-        .catch((error) => console.error(error));
-}
+        .then(function (data){
+            // console.log(data);
+            console.log("Startnummer:" + data.row);
+            window.virtualrace.startnumber = data.row;
 
+            // Switch to "RACE" screen
+            showContent("contents");
+        })
+		.catch((error) => console.error(error));
+}

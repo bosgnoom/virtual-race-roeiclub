@@ -7,12 +7,13 @@ function runSetup() {
 	// Set up "global" variables inside window (overall function)
 	window.virtualrace = new Object();
 	window.virtualrace.progress = 0;
+	window.virtualrace.lastProgress = 0;
 	window.virtualrace.mymap = loadMap();
-	window.virtualrace.waypoints = loadWayPoints(-1);  // -1 = default route
+	window.virtualrace.waypoints = loadWayPoints(-1); // -1 = default route
 	window.virtualrace.markers = setupMarkers();
 	// Using fetch, (nog) geen manier gevonden om als functie terug te geven
 	// Uit google sheet
-	loadRoutes(); 
+	loadRoutes();
 
 	// Race voortgang
 	window.virtualrace.currentPosition = null;
@@ -20,11 +21,16 @@ function runSetup() {
 	window.virtualrace.startTijd = Date.now();
 	window.virtualrace.afstand = 0;
 	window.virtualrace.started = false;
+	window.virtualrace.startnumber = -1;
 
 	// Iedere seconde informatie bijwerken
 	window.setInterval(function () {
 		if (virtualrace.currentPosition) {
 			updateInformation(virtualrace.currentPosition);
+		}
+		if (virtualrace.progress != virtualrace.lastProgress) {
+			virtualrace.lastProgress = virtualrace.progress;
+			updateRaceRegistration(virtualrace.progress);
 		}
 	}, 1000);
 }
@@ -101,7 +107,7 @@ function updateUserText(progress, afstand) {
 				console.log("Tijd reset");
 			}
 			virtualrace.stopTijd = Date.now();
-			tekst = "<h2>GESTART!</h2><h3>Ga naar eerste checkpoint</h3>";
+			tekst = "<h2>GESTART!</h2><h3>Ga naar het eerste checkpoint</h3>";
 			break;
 
 		case virtualrace.waypoints.length - 1:
@@ -141,4 +147,56 @@ function updateUserText(progress, afstand) {
 
 	x = document.getElementById("contents");
 	x.innerHTML = tekst;
+}
+
+function updateRaceRegistration(progress) {
+	routesUrl =
+		//"https://script.google.com/macros/s/AKfycbwhB3Wv0oZfOEfLN3yBeTr2dzhINsJhH1Gf5-u2fX8/dev";
+		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec";
+	//routesUrl = "https://script.google.com/macros/s/AKfycbwhB3Wv0oZfOEfLN3yBeTr2dzhINsJhH1Gf5-u2fX8/dev";
+
+	console.log("Updating race progress...");
+
+	progress_names = [
+		"Timestamp",
+		"Starttime",
+		"Waypoint01time",
+		"Waypoint02time",
+		"Waypoint03time",
+		"Waypoint04time",
+		"Waypoint05time",
+		"Finishtime",
+	];
+
+	bericht = "action=update&rowId=" +
+	virtualrace.startnumber +
+	"&" +
+	progress_names[progress] +
+	"=" +
+	Date.now();
+
+	console.log("Bericht:" + bericht);
+
+	fetch(routesUrl, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+		body: bericht,
+	})
+		.then(function (response) {
+			if (response.ok) {
+				console.log("Antwoord:");
+				console.log(response);
+				return response.json();
+			} else {
+				console.error("Geen goede respons terug gekregen...");
+				console.log(response);
+				return null;
+			}
+		})
+		.then(function (data) {
+			console.log(data);
+		})
+		.catch((error) => console.error(error));
 }
