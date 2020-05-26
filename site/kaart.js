@@ -57,9 +57,6 @@ function loadWayPoints(routenummer) {
 
 	//console.log("Aantal waypoints:" + waypoints.length);
 
-	//removeWayPoints(virtualrace.markers);
-	//virtualrace.markers = setupWayPoints(waypoints);
-
 	return waypoints;
 }
 

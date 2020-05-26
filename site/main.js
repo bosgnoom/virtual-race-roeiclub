@@ -151,9 +151,7 @@ function updateUserText(progress, afstand) {
 
 function updateRaceRegistration(progress) {
 	routesUrl =
-		//"https://script.google.com/macros/s/AKfycbwhB3Wv0oZfOEfLN3yBeTr2dzhINsJhH1Gf5-u2fX8/dev";
 		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec";
-	//routesUrl = "https://script.google.com/macros/s/AKfycbwhB3Wv0oZfOEfLN3yBeTr2dzhINsJhH1Gf5-u2fX8/dev";
 
 	console.log("Updating race progress...");
 
@@ -168,12 +166,13 @@ function updateRaceRegistration(progress) {
 		"Finishtime",
 	];
 
-	bericht = "action=update&rowId=" +
-	virtualrace.startnumber +
-	"&" +
-	progress_names[progress] +
-	"=" +
-	Date.now();
+	bericht =
+		"action=update&rowId=" +
+		virtualrace.startnumber +
+		"&" +
+		progress_names[progress] +
+		"=" +
+		Date.now();
 
 	console.log("Bericht:" + bericht);
 

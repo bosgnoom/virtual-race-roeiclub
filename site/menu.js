@@ -18,7 +18,7 @@ function hideSidebar() {
 
 function showContent(welke) {
 	// Niet charmant, via functie mogelijk?
-	alle_elementen = ["mySidebar", "contents", "races", "todo"];
+	alle_elementen = ["mySidebar", "contents", "races", "player"];
 
 	// Eerst alles verstoppen
 	alle_elementen.forEach((element) => {
@@ -32,5 +32,5 @@ function showContent(welke) {
 
 	// Gewenste laten zien
 	document.getElementById(welke).style.display = "block";
-		document.getElementById("mapid").style.display = "block";
+	document.getElementById("mapid").style.display = "block";
 }

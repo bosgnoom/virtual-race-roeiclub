@@ -22,12 +22,11 @@
     crossorigin=""></script>
 
   <!-- Eigen scripts inladen -->
-  <script>var version = 12;</script>
-  <script src="main.js?xxsdfasdx"></script>
-  <script src="kaart.js?xxx"></script>
-  <script src="routes.js?xyyssxx"></script>
-  <script src="menu.js?xxx"></script>
-  <script src="todo.js?x1"></script>
+  <script src="main.js?1"></script>
+  <script src="kaart.js?1"></script>
+  <script src="routes.js?1"></script>
+  <script src="menu.js?1"></script>
+  <script src="todo.js?1"></script>
 
   <!-- style.css inladen, map en menu -->
   <link rel="stylesheet" href="style.css?1">
@@ -38,7 +37,7 @@
   <nav class="w3-sidebar w3-bar-block w3-card" id="mySidebar" style="display:none;">
     <button class="w3-bar-item w3-button" onclick="showContent('contents')">Race</button>
     <button class="w3-bar-item w3-button" onclick="showContent('races')">Beschikbare races</button>
-    <button class="w3-bar-item w3-button" onclick="showContent('todo')">TODO</button>
+    <button class="w3-bar-item w3-button" onclick="showContent('player')">Speler info</button>
   </nav>
 
   <header class="w3-top w3-bar w3-theme">
@@ -51,10 +50,18 @@
     <hr>
 
     <div class="w3-cell-row">
-      <!-- TODO -->
-      <div class="w3-cell w3-container" id="todo" style="display:none;">
+      <!-- Player info -->
+      <div class="w3-cell w3-container" id="player" style="display:none;">
         <!-- Wordt gevuld via JavaScript -->
         TODO...
+        Hier komt een formulier te staan waar de speler de informatie kan invullen<br>
+        <ul>
+          <li>Naam/email adres</li>
+          <li>Welke boot</li>
+          <li>Wind tegen of mee</li>
+          <li>Lid van <i>Swim Team 1912</i></li>
+          <li>...</li>
+        </ul>
         
       </div>
     </div>
