@@ -148,8 +148,17 @@ function laatRoutesZien(welkeDan) {
 		// Add START button at the end of the available races list
 		var knopje = document.createElement("button");
 		inhoud.appendChild(knopje);
-		knopje.innerHTML = "START";
-		knopje.setAttribute("onclick", "fetch_todo();");
+		knopje.innerHTML = "Haal start nummer op";
+		knopje.setAttribute("onclick", "fetchStartNr();");
+		knopje.setAttribute("id", "routeButton");
+
+		// Add FETCHING message (hidden) to show when button is pressed
+		var msg = document.createElement("div");
+		inhoud.appendChild(msg);
+		msg.innerHTML = "Startnummer wordt opgehaald..."
+		msg.setAttribute("style", "display:none");
+		msg.setAttribute("id", "fetchMessage");
+
 	} else {
 		laatRoutesNietGevondenZien();
 	}
@@ -160,4 +169,55 @@ function laatRoutesNietGevondenZien() {
 	inhoud.innerHTML =
 		"Helaas is er iets mis gegaan bij het laden van de routes..." +
 		"Stuur een bericht, dit zou niet moeten gebeuren...";
+}
+
+function fetchStartNr() {
+	// This function is called when the user clicks on "Haal start nummer op"
+	// Hides button,
+	// Displays "Fetching..."
+	// Fetches start number
+	button = document.getElementById("routeButton");
+	button.style.display = "none";
+	msg = document.getElementById("fetchMessage");
+	msg.style.display = "block";
+
+	fetchStartNrFromGoogleSheet();
+}
+
+function fetchStartNrFromGoogleSheet() {
+	routesUrl =
+		"https://script.google.com/macros/s/AKfycbzB3F0iaBXWNo50XEL2ARXr_aEoWp2Ij_nTAqy_rTGsmq6lxPk/exec";
+
+	console.log("Fetching starting number...");
+
+	fetch(routesUrl, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+		body: "action=startRace",
+	})
+		.then(function (response) {
+			if (response.ok) {
+				// console.log("Antwoord:");
+				// console.log(response);
+				return response.json();
+			} else {
+				console.error("Geen goede respons terug gekregen...");
+				console.log(response);
+				return null;
+			}
+		})
+		.then(function (data) {
+			// console.log(data);
+			console.log("Startnummer:" + data.row);
+			window.virtualrace.startnumber = data.row;
+
+			title = document.getElementById("title");
+			title.innerHTML += " #" + data.row;
+
+			// Switch to "RACE" screen
+			showContent("contents");
+		})
+		.catch((error) => console.error(error));
 }
