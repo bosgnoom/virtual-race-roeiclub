@@ -2,4 +2,7 @@
 
 source config.sh
 
-curl -T "$(echo {$(ls site/* | tr [:space:] ',')})" $FTP_SITE
+FILE_LIST="$(echo $(ls site/* | tr [:space:] ','))"
+FILES="{${FILE_LIST%?}}"
+
+curl -T $FILES $FTP_SITE

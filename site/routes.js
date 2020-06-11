@@ -73,7 +73,7 @@ function berekenAfstand(position, waypoint) {
 		6371137 *
 		Math.acos(
 			Math.cos(rLatU) * Math.cos(rLat) * Math.cos(rLon - rLonU) +
-				Math.sin(rLatU) * Math.sin(rLat)
+			Math.sin(rLatU) * Math.sin(rLat)
 		);
 
 	return Math.round(distance);
@@ -124,25 +124,28 @@ function laatRoutesZien(welkeDan) {
 
 		// Iedere race in de <div> zetten, als radiobutton
 		welkeDan.values.map(function (route, i) {
-			var radio = document.createElement("input");
-			radio.type = "radio";
-			radio.name = "routes";
-			radio.value = i;
-			radio.id = i;
-			radio.setAttribute("class", "checkmark");
+			// Only add non-empty routes
+			if (route[2] != "") {
+				var radio = document.createElement("input");
+				radio.type = "radio";
+				radio.name = "routes";
+				radio.value = i;
+				radio.id = i;
+				radio.setAttribute("class", "checkmark");
 
-			var span = document.createElement("span");
-			span.setAttribute("class", "checkmark");
+				var span = document.createElement("span");
+				span.setAttribute("class", "checkmark");
 
-			var label = document.createElement("label");
-			label.setAttribute("for", i);
-			label.setAttribute("class", "radio-container");
-			label.setAttribute("onclick", "laadNieuweRoute(" + i + ");");
-			label.innerHTML = "<b>" + route[2] + "</b><br>" + route[3] + "<br>";
+				var label = document.createElement("label");
+				label.setAttribute("for", i);
+				label.setAttribute("class", "radio-container");
+				label.setAttribute("onclick", "laadNieuweRoute(" + i + ");");
+				label.innerHTML = "<b>" + route[2] + "</b><br>" + route[3] + "<br>";
 
-			lijstje.appendChild(label);
-			label.appendChild(radio);
-			label.appendChild(span);
+				lijstje.appendChild(label);
+				label.appendChild(radio);
+				label.appendChild(span);
+			}
 		});
 
 		// Add START button at the end of the available races list
