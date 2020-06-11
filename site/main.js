@@ -49,7 +49,7 @@ function updateInformation(position) {
 
 	// Check of we naar het volgende waypoint kunnen gaan
 	// Afstand in meters
-	if (virtualrace.afstand < 20) {
+	if (virtualrace.afstand < 100) {
 		// Naar volgende waypoint als dat gaat
 		if (virtualrace.progress < virtualrace.waypoints.length) {
 			// Oude marker bijwerken
