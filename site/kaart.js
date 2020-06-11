@@ -53,6 +53,10 @@ function loadWayPoints(routenummer) {
 				waypoints.push([waypoint[0], waypoint[1]]);
 			}
 		});
+
+		// Change the default detection radius around each waypoint
+		console.log("Detection radius:" + virtualrace.routes.values[routenummer][11]);
+		virtualrace.detection_radius = virtualrace.routes.values[routenummer][11];
 	}
 
 	//console.log("Aantal waypoints:" + waypoints.length);
@@ -79,7 +83,8 @@ function setupMarkers(waypoints) {
 	for (i = 0; i < waypoints.length; i++) {
 		//console.log(waypoints[i]);
 		var circle = L.circleMarker(waypoints[i], {
-			opacity: 0.2,
+			opacity: 0.5,
+			radius: virtualrace.detection_radius/5
 		}).addTo(virtualrace.mymap);
 		markers.push(circle);
 		console.log("Waypoint nr " + i + ":" + waypoints[i]);

@@ -8,6 +8,7 @@ function runSetup() {
 	window.virtualrace = new Object();
 	window.virtualrace.progress = 0;
 	window.virtualrace.lastProgress = 0;
+	window.virtualrace.detection_radius = 100;
 	window.virtualrace.mymap = loadMap();
 	window.virtualrace.waypoints = loadWayPoints(-1); // -1 = default route
 	window.virtualrace.markers = setupMarkers();
@@ -49,7 +50,7 @@ function updateInformation(position) {
 
 	// Check of we naar het volgende waypoint kunnen gaan
 	// Afstand in meters
-	if (virtualrace.afstand < 100) {
+	if (virtualrace.afstand < virtualrace.detection_radius) {
 		// Naar volgende waypoint als dat gaat
 		if (virtualrace.progress < virtualrace.waypoints.length) {
 			// Oude marker bijwerken
